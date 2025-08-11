@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Management Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-truck"></i> Fleet Tracker</h1>
+                <p>Real-time GPS tracking & geofencing</p>
+            </div>
+
+            <!-- UUID Tracking Section -->
+            <div class="section">
+                <h3><i class="fas fa-search"></i> Track by UUID</h3>
+                <div class="input-group">
+                    <input type="text" id="uuidInput" placeholder="Enter UUID to track..." />
+                    <button id="trackBtn" class="btn btn-primary">
+                        <i class="fas fa-map-marker-alt"></i> Track
+                    </button>
+                </div>
+                
+                <div class="input-group">
+                    <button id="demoBtn" class="btn btn-secondary">
+                        <i class="fas fa-play"></i> Start Demo
+                    </button>
+                </div>
+                
+                <div id="activeTrackers" class="tracker-list">
+                    <h4>Active Trackers</h4>
+                    <div id="trackersList"></div>
+                </div>
+            </div>
+
+            <!-- Geofencing Section -->
+            <div class="section">
+                <h3><i class="fas fa-shield-alt"></i> Geofencing</h3>
+                <div class="geofence-controls">
+                    <input type="text" id="geofenceUuid" placeholder="UUID for geofence..." />
+                    <input type="number" id="geofenceRadius" placeholder="Radius (m)" value="1000" />
+                    <button id="createGeofenceBtn" class="btn btn-warning">
+                        <i class="fas fa-plus-circle"></i> Create Geofence
+                    </button>
+                </div>
+                
+                <div id="geofencesList" class="geofence-list">
+                    <h4>Active Geofences</h4>
+                </div>
+                
+                <div id="alertsList" class="alerts-list">
+                    <h4>Recent Alerts</h4>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="section">
+                <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
+                <div id="stats" class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalTrackers">0</span>
+                        <span class="stat-label">Active Trackers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalAlerts">0</span>
+                        <span class="stat-label">Alerts Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalDistance">0 km</span>
+                        <span class="stat-label">Distance Traveled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Map Area -->
+        <div class="main-content">
+            <div class="map-header">
+                <div class="map-controls">
+                    <button id="centerMapBtn" class="btn btn-outline">
+                        <i class="fas fa-crosshairs"></i> Center Map
+                    </button>
+                    <button id="clearPathBtn" class="btn btn-outline">
+                        <i class="fas fa-eraser"></i> Clear Paths
+                    </button>
+                    <button id="toggleGeofencesBtn" class="btn btn-outline">
+                        <i class="fas fa-eye"></i> Toggle Geofences
+                    </button>
+                </div>
+                
+                <div class="map-info">
+                    <div id="selectedTracker" class="tracker-info" style="display: none;">
+                        <h4 id="trackerUuid"></h4>
+                        <p><i class="fas fa-clock"></i> Last Update: <span id="lastUpdate"></span></p>
+                        <p><i class="fas fa-tachometer-alt"></i> Speed: <span id="currentSpeed">0</span> km/h</p>
+                        <p><i class="fas fa-route"></i> Distance: <span id="totalDistanceTraveled">0</span> km</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="map" class="map"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
